@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
+import { socket } from '../Services/socket';
 
 const Home = () => {
     
@@ -46,6 +47,18 @@ const Home = () => {
         }
         fetchData();
     }, [setCards])
+    // Set up socket listener on component mount
+    useEffect(() => {
+        socket.on('message-server', (message) => {
+            const { title, description } = message;
+            alert(`Message received: ${title} and ${description}`);
+        });
+
+        // Cleanup listener when component unmounts
+        return () => {
+            socket.off('message-server');
+        };
+    }, []); // Empty dependency array to ensure the effect runs only once on mount
 
     return (
         <>
