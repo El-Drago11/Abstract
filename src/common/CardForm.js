@@ -1,23 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
-import { addCardDetails } from '../Services/operations/CardOperation';
+// import toast from 'react-hot-toast';
+// import { addCardDetails,addNotificationDetails } from '../Services/operations/CardOperation';
+import { socket } from '../Services/socket';
 
 const CardForm = () => {
+
     const { register, handleSubmit, setValue, formState: { errors } } = useForm();
 
     const cardData = async (data) => {
-        const formData = new FormData();
-        formData.append("title", data.InputTitle);
-        formData.append("description", data.InputDescription);
 
-        const result = await addCardDetails(formData);
-        console.log('Added card result:', result);
+        const cardDetails = {
+            title: data.InputTitle,
+            description: data.InputDescription
+        };
 
-        if (!result) {
-            return;
-        }
-
+        socket.emit('user-message',cardDetails)
+        
         setValue("InputTitle", '');
         setValue("InputDescription", '');
     }
@@ -26,10 +25,23 @@ const CardForm = () => {
         setValue("InputTitle", '');
         setValue("InputDescription", '');
     }, [setValue]);
+     // Set up socket listener on component mount
+     useEffect(() => {
+        socket.on('message-server', (message) => {
+            const { title, description } = message;
+            alert(`Message received: ${title} and ${description}`);
+        });
+
+        // Cleanup listener when component unmounts
+        return () => {
+            socket.off('message-server');
+        };
+    }, []); // Empty dependency array to ensure the effect runs only once on mount
+
 
     return (
-        <div className='container mt-4'>
-            <div className='row justify-content-center'>
+        <div className='container mt-4 d-flex flex-column' style={{position:'relative', display:'flex',justifyContent:'center' , alignItems:'center',height:'100vh'}}>
+            <div className={`row justify-content-center container-fluid`} id='form-data'>
                 <div className='col-md-8 col-lg-6'>
                     <div className='card'>
                         <div className='card-header'>

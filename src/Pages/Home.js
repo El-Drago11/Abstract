@@ -6,9 +6,11 @@ import {faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { useForm } from 'react-hook-form';
 
 const Home = () => {
+    
     const {handleSubmit} = useForm();
     const inputRef = useRef(null);
     const [cards, setCards ] = useState([]);
+    
     const fetchCard = async() => {
         const searchQuery = inputRef.current.value.trim();
         if (searchQuery === '') {
@@ -18,6 +20,19 @@ const Home = () => {
         const result = await fetchCardDetails(searchQuery);
         setCards(result)
     };
+
+    const toggleCardVisibility=(event)=>{
+        const card = event.currentTarget;
+        const descriptionElement = card.querySelector('.card-text');
+        
+        if (descriptionElement) {
+        if (descriptionElement.classList.contains('d-none')) {
+            descriptionElement.classList.remove('d-none');
+        } else {
+            descriptionElement.classList.add('d-none');
+        }
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -48,10 +63,10 @@ const Home = () => {
             <div className='container mt-4'>
                 <div className="row gx-5 mt-5 mb-5">
                     {
-                        cards?.length === 0 ? <h1 className='text-black text-center'>No card Found !</h1>:
+                        cards?.length === 0 ? <h1 className='text-black text-center'>No Notification Found !</h1>:
                         cards?.map((val,index) => (
-                            <div className="col-sm-6 mb-3 mb-sm-0 mt-5 mb-5" key={index}>
-                                <div className="card">
+                            <div className="col-sm-6 mb-3 mb-sm-0 mt-5 mb-5" key={index} >
+                                <div className="card" onClick={(event)=>toggleCardVisibility(event)}>
                                     <div className="card-body">
                                         <h5 className="card-title text-uppercase">{val?.title}</h5>
                                         <p className="card-text" style={{textTransform:'capitalize'}}>{val?.description}</p>

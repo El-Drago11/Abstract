@@ -1,8 +1,26 @@
 import { toast } from "react-hot-toast"
 import { apiConnector } from "../apiConnector"
-import {cardApi} from '../api'
-
+import {cardApi,notificationApi} from '../api'
 const {GETALLCARDS_API,ADDCARD_API,GETCARDDETAILS_API,DELETECARD_API} = cardApi;
+const {SENDNOTIFICATION_API} = notificationApi
+
+export const addNotificationDetails = async(data)=>{
+  const toastId = toast.loading("Loading...")
+  let result = null;
+  try {
+      const response = await apiConnector("POST", SENDNOTIFICATION_API,data,{"Content-Type": "multipart/form-data"})
+      if (!response?.data?.success) {
+          throw new Error("Could Not Add Course Details")
+        }
+        toast.success("Card Details Added Successfully")
+        result = response?.data?.data
+
+  } catch (error) {
+      toast.error(error?.response?.data?.message || error?.message );
+  }
+  toast.dismiss(toastId);
+  return result;
+}
 
 
 export const getAllCards = async () => {

@@ -5,8 +5,8 @@ import Navbar from './common/Navbar';
 import Home from './Pages/Home';
 import CardForm from './common/CardForm';
 
-
 function App() {
+  
   return (
     <>
       <Navbar/>

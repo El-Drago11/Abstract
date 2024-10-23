@@ -6,3 +6,7 @@ export const cardApi= {
     GETCARDDETAILS_API: BASE_URL+"/findCardDetails",
     DELETECARD_API: BASE_URL+"/deleteCards",
 }
+
+export const notificationApi= {
+    SENDNOTIFICATION_API : BASE_URL+"/sendNotification"
+}
