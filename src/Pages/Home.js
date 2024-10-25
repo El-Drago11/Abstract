@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { fetchCardDetails, getAllCards } from '../Services/operations/CardOperation'
+import {getAllNotification } from '../Services/operations/CardOperation'
 import toast from 'react-hot-toast';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -12,15 +12,15 @@ const Home = () => {
     const inputRef = useRef(null);
     const [cards, setCards ] = useState([]);
     
-    const fetchCard = async() => {
-        const searchQuery = inputRef.current.value.trim();
-        if (searchQuery === '') {
-            toast.error('Please enter the title! ');
-            return;
-        }
-        const result = await fetchCardDetails(searchQuery);
-        setCards(result)
-    };
+    // const fetchCard = async() => {
+    //     const searchQuery = inputRef.current.value.trim();
+    //     if (searchQuery === '') {
+    //         toast.error('Please enter the title! ');
+    //         return;
+    //     }
+    //     const result = await fetchCardDetails(searchQuery);
+    //     setCards(result)
+    // };
 
     const toggleCardVisibility=(event)=>{
         const card = event.currentTarget;
@@ -38,7 +38,7 @@ const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                var res = await getAllCards();
+                var res = await getAllNotification();
                 setCards(res);
 
             } catch (error) {
@@ -66,10 +66,10 @@ const Home = () => {
                 <h1 className='mt-5'>How Can We Help?</h1>
                 <nav className="navbar mt-2 mb-5">
                     <form className="container-fluid">
-                        <div className="input-group ">
+                        {/* <div className="input-group ">
                             <input type="text" className="form-control border border-black" placeholder="Search by card title" aria-label="Username" aria-describedby="basic-addon1" ref={inputRef}/>
                             <span className="input-group-text ml-4 border border-black " id="basic-addon1" style={{cursor:'pointer'}}><FontAwesomeIcon icon={faArrowRight} onClick={handleSubmit(fetchCard)}/></span>
-                        </div>
+                        </div> */}
                     </form>
                 </nav>
             </div>
@@ -81,8 +81,8 @@ const Home = () => {
                             <div className="col-sm-6 mb-3 mb-sm-0 mt-5 mb-5" key={index} >
                                 <div className="card" onClick={(event)=>toggleCardVisibility(event)}>
                                     <div className="card-body">
-                                        <h5 className="card-title text-uppercase">{val?.title}</h5>
-                                        <p className="card-text" style={{textTransform:'capitalize'}}>{val?.description}</p>
+                                        <h5 className="card-title text-uppercase">{val?.createdBy}</h5>
+                                        <p className="card-text" style={{textTransform:'capitalize'}}>{val?.NotificationMessage}</p>
                                     </div>
                                 </div>
                             </div>

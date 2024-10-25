@@ -1,11 +1,10 @@
 // Socket connection
-const userChat = require('../models/UserChat');
-const mongoose = require('mongoose')
+const userNotification = require('../models/UserNotification');
 
 module.exports.SendNotificationAlert = (io) => {
 
     io.on('connection', (socket) => {
-        console.log(`User connected: ${socket.id}`);
+        // console.log(`User connected: ${socket.id}`);
         
         // Listen for 'user-message' event
         socket.on('user-message', async (userdata) => {
@@ -17,7 +16,7 @@ module.exports.SendNotificationAlert = (io) => {
                 try {
 
                     // Save the message to the database
-                    const userMessage = await userChat.create({ createdBy:title, NotificationMessage: description});
+                    const userMessage = await userNotification.create({ createdBy:title, NotificationMessage: description});
                     
                     // Emit the message to all connected clients
                     io.emit("message-server", userdata);
