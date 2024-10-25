@@ -9,13 +9,21 @@ const http = require("http");
 const { Server } = require("socket.io");
 const notificationRoute = require('./routes/Notification')
 const {SendNotificationAlert} = require('./controller/notificationController');
+const frontendUrl = process.env.FRONT_END_URL
+
+app.use(cors({
+    origin: frontendUrl,
+    methods: ["GET", "POST"],
+    credentials: true,
+}))
+
 
 // Getting socket server instance
 const server = http.createServer(app);
 // Using socket.io
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: frontendUrl,
         methods: ["GET", "POST"],
         credentials: true,
     },
@@ -33,12 +41,6 @@ app.use(fileUpload({
 
 app.use('/api/v1',notificationRoute)
 
-
-app.use(cors({
-    origin:'http://localhost:3000',  //front-end 'url'
-    credentials:true
-}))
-
 //connect to the database
 dbConnect()
 
@@ -48,7 +50,8 @@ app.get('/',(req,res)=>{
         message : `your server is Running at ${port}`
     })
 })
-//---> app hosted
+
+//backend hosted at the server craeted by the websocket
 server.listen(port ,(req,res)=>{
     console.log(`APP is  running successful at ${port}`)
 })

@@ -34,17 +34,17 @@ const Home = () => {
         }
         }
     }
+    const fetchData = async () => {
+        try {
+            var res = await getAllNotification();
+            setCards(res);
+
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                var res = await getAllNotification();
-                setCards(res);
-
-            } catch (error) {
-                toast.error(error.message)
-            }
-        }
         fetchData();
     }, [setCards])
     // Set up socket listener on component mount
@@ -52,13 +52,19 @@ const Home = () => {
         socket.on('message-server', (message) => {
             const { title, description } = message;
             alert(`Message received: ${title} and ${description}`);
-        });
 
+            //add the card to the UI
+            // setCards((prevCards) => [
+            //     ...prevCards,
+            //     { createdBy: title, NotificationMessage: description },
+            // ]);
+            
+        });
         // Cleanup listener when component unmounts
         return () => {
             socket.off('message-server');
         };
-    }, []); // Empty dependency array to ensure the effect runs only once on mount
+    }, []);
 
     return (
         <>
