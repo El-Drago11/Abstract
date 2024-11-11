@@ -54,10 +54,10 @@ const Home = () => {
             alert(`Message received: ${title} and ${description}`);
 
             //add the card to the UI
-            // setCards((prevCards) => [
-            //     ...prevCards,
-            //     { createdBy: title, NotificationMessage: description },
-            // ]);
+            setCards((prevCards) => [
+                ...prevCards,
+                { createdBy: title, NotificationMessage: description },
+            ]);
             
         });
         // Cleanup listener when component unmounts
