@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { useForm } from 'react-hook-form';
-// import toast from 'react-hot-toast';
-// import { addCardDetails,addNotificationDetails } from '../Services/operations/CardOperation';
 import { socket } from '../Services/socket';
 
 const CardForm = () => {
@@ -14,7 +12,7 @@ const CardForm = () => {
             title: data.InputTitle,
             description: data.InputDescription
         };
-
+        
         socket.emit('user-message',cardDetails)
         
         setValue("InputTitle", '');

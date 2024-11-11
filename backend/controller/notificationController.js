@@ -10,7 +10,7 @@ module.exports.SendNotificationAlert = (io) => {
         socket.on('user-message', async (userdata) => {
             const {title,description} = userdata;
 
-            console.log('Recievd at backend : ',userdata)
+            // console.log('Recievd at backend : ',userdata)
 
             if (title && description) {
                 try {
